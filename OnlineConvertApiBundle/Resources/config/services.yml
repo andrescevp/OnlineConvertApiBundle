@@ -1,0 +1,19 @@
+services:
+#    aacp_online_convert_api.example:
+#        class: Aacp\OnlineConvertApiBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    oc.information:
+        class: Aacp\OnlineConvertApiBundle\Handler\Information
+        arguments: [ "@sdk.information", %oc.api_key%, %oc.decorator% ]
+
+    oc.conversion:
+        class: Aacp\OnlineConvertApiBundle\Handler\Conversion
+        arguments: [%oc.api_key%, %oc.decorator%, %oc.https%]
+
+
+#private services
+
+#sdk services
+    sdk.information:
+        class: SwaggerClient\InformationApi
+        public: false
