@@ -26,7 +26,7 @@ class JobInfoCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $jobId = $input->getArgument('job_id');
-        $information = $this->getContainer()->get('oc.conversion');
+        $information = $this->getContainer()->get('oc.all_conversions');
 
         $output->writeln($information->getJobInfo($jobId));
     }

@@ -30,10 +30,16 @@ class JobCreateCommand extends ContainerAwareCommand
         $category = $input->getArgument('category');
         $target = $input->getArgument('target');
         $source = $input->getArgument('input');
-        $jobCreator = $this->getContainer()->get('oc.conversion');
+        $jobCreator = $this->getContainer()->get('oc.all_conversions');
 
-        $jobCreated = $jobCreator->createNewConversion($category, $target, $source);
+        $options = [ 'rewq' ];
+
+        $jobCreated = $jobCreator->newConversion($source, $category, $target, $options);
 
         $output->writeln(print_r($jobCreated));
+
+        if ($jobCreator->lookStatus() == true) {
+            $output->writeln('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        }
     }
 }

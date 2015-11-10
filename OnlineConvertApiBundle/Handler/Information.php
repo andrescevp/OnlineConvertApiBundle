@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andres
- * Date: 05/11/2015
- * Time: 23:28
- */
 
 namespace Aacp\OnlineConvertApiBundle\Handler;
 
@@ -26,10 +20,13 @@ class Information
 
     private $apiKey;
 
-    public function __construct(InformationApi $informationApi, $apiKey, $decoratorName)
+    public function __construct(InformationApi $informationApi, $apiKey, $decoratorName = null)
     {
         $this->info = $informationApi;
         $this->apiKey = $apiKey;
+        if ($decoratorName === null) {
+            $decoratorName = 'json';
+        }
         $decoratorFactory = new Factory($decoratorName);
         $this->decorator = $decoratorFactory->getDecorator();
     }
@@ -54,7 +51,4 @@ class Information
             $this->info->conversionsGet($category, $target, $page)
         );
     }
-
-
-
 }

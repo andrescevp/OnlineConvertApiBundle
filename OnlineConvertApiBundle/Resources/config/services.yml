@@ -6,14 +6,15 @@ services:
         class: Aacp\OnlineConvertApiBundle\Handler\Information
         arguments: [ "@sdk.information", %oc.api_key%, %oc.decorator% ]
 
-    oc.conversion:
-        class: Aacp\OnlineConvertApiBundle\Handler\Conversion
-        arguments: [%oc.api_key%, %oc.decorator%, %oc.https%]
+    oc.all_conversions:
+        class: Aacp\OnlineConvertApiBundle\Handler\AllConversions
+        arguments: [ %oc.api_key%, "@oc.information", %oc.decorator%, %oc.https%, "@?oc.callback.status" ]
 
 
-#private services
+    oc.callback.status:
+        class: Aacp\OnlineConvertApiBundle\Controller\StatusCallbackController
+        public: false
 
-#sdk services
     sdk.information:
         class: SwaggerClient\InformationApi
         public: false

@@ -27,10 +27,10 @@ class JobGetOutputCommand extends ContainerAwareCommand
     {
         $jobId = $input->getArgument('job_id');
 
-        $jobCreator = $this->getContainer()->get('oc.conversion');
+        $jobCreator = $this->getContainer()->get('oc.all_conversions');
 
         $jobCreated = $jobCreator->getOutput($jobId);
 
-        $output->writeln(print_r($jobCreated));
+        $output->writeln($jobCreator->getDecorator()->pretty($jobCreated));
     }
 }
