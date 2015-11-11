@@ -4,6 +4,7 @@ namespace Aacp\OnlineConvertApiBundle\Handler;
 
 
 use Aacp\OnlineConvertApiBundle\Decorator\Factory as FactoryDecorator;
+use Aacp\OnlineConvertApiBundle\Handler\Schema\Persister;
 use Aacp\OnlineConvertApiBundle\Helper\Common;
 use Aacp\OnlineConvertApiBundle\Helper\Constants;
 use Aacp\OnlineConvertApiBundle\Validator\ConversionOptions;
@@ -61,6 +62,7 @@ abstract class Conversion
     protected $target;
 
     private $information;
+    private $schemaPersister;
 
     public function __construct($apiKey, Information $information, $decoratorName, $category = null, $target = null, $https = false)
     {
@@ -74,6 +76,7 @@ abstract class Conversion
         $this->https = $https;
         $this->category = $category;
         $this->target = $target;
+        $this->schemaPersister = new Persister();
     }
 
     /**
@@ -102,9 +105,8 @@ abstract class Conversion
         if(!empty($options)) {
             $validator = new ConversionOptions();
             $schema = $this->information->getConversionInfo($this->category, $this->target, 1);
-            $schema = json_decode(substr($schema, 1, -1), true);
-            $schema = $schema['options'];
-            $schema = json_encode($schema);
+            $schema = substr($schema, 1, -1);
+            $schema = $this->schemaPersister->getSchema($this->category . '.' .$this->target, $schema);
             $validator->validate($options, $schema);
         }
 

@@ -26,4 +26,5 @@ class Constants
      * @const string INPUT_UPLOAD Used for local files
      */
     const INPUT_UPLOAD = 'upload';
+
 }

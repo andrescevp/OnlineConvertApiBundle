@@ -26,8 +26,9 @@ class ConversionOptions implements Interfaced
      */
     public function validate($data, $constraints)
     {
-        $retriever = new RefResolver();
-         $schema= $retriever->resolve($constraints);
+        $retriever = new UriRetriever();
+        $schema = $retriever->retrieve('file://'.$constraints);
+
         $this->validator->check($data, $schema);
 
         if ($this->validator->isValid()) {
