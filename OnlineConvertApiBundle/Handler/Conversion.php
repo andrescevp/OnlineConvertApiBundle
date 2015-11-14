@@ -149,7 +149,9 @@ abstract class Conversion
         //Expected all the inputs with the same type
         $this->createdJob = $this->jobApi->jobsPost($this->apiKey, $this->job);
 
-        $this->postFile($this->inputFiles[0]);
+        if (count($this->inputFiles) > 0) {
+            $this->postFile($this->inputFiles[0]);
+        }
     }
 
     /**
@@ -158,15 +160,13 @@ abstract class Conversion
      */
     protected function postFile(InputFile $file)
     {
-        if (is_object($file) && $file->type === Constants::INPUT_UPLOAD) {
-            $this->createdJob->server = Common::httpsToHttpVice($this->createdJob->server);
-            $this->createdJob->input[] = $this->jobApi->jobsPostFile(
-                $this->apiKey,
-                $this->createdJob,
-                $file->source
-            );
-        }
 
+        $this->createdJob->server = Common::httpsToHttpVice($this->createdJob->server);
+        $this->createdJob->input[] = $this->jobApi->jobsPostFile(
+            $this->apiKey,
+            $this->createdJob,
+            $file->source
+        );
         return true;
     }
 

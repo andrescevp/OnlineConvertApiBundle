@@ -36,10 +36,11 @@ class JobCreateCommand extends ContainerAwareCommand
 
         $jobCreated = $jobCreator->newConversion($source, $category, $target, $options);
 
-        $output->writeln(print_r($jobCreated));
+//        $output->writeln(print_r($jobCreated));
+
 
         if ($jobCreator->lookStatus() == true) {
-            $output->writeln('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            $output->writeln($jobCreator->getStatus());
         }
     }
 }

@@ -18,7 +18,7 @@ class AllConversions extends Conversion
         $this->category = $category;
         $this->target = $target;
 
-        parent::createNewConversion($input, $options);
+        return parent::createNewConversion($input, $options);
     }
 
     protected function dispatch($pretty = false)

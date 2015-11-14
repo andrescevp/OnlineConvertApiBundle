@@ -18,3 +18,8 @@ services:
     sdk.information:
         class: SwaggerClient\InformationApi
         public: false
+
+    oc.listener.request:
+        class: Aacp\OnlineConvertApiBundle\EventListener\OnlineConvertRequest
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
