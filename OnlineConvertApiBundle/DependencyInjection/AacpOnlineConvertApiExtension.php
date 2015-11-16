@@ -23,16 +23,54 @@ class AacpOnlineConvertApiExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
+        $container = $this->loadMainConfig($container, $config);
+
+        $this->loadConversions($container, $config);
+
+    }
+
+    private  function loadMainConfig(ContainerBuilder $container, $config)
+    {
         foreach ($config as $key => $value) {
             $container->setParameter('oc.'.$key, $value);
         }
 
-        if ($container->getParameter('oc.debug')) {
+        if ($container->getParameter('oc.debug') === true) {
             OcSdkApiConfig::$debug = true;
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        if ($container->getParameter('oc.convert_to_all') === true) {
+            $container = $this->enableAllConversions($container);
+        }
+
+        return $container;
     }
 
+    private function loadConversions(ContainerBuilder $container, $config)
+    {
+        if (empty($config['jobs'])) {
+            return $container;
+        }
+
+        foreach($config['jobs'] as $name => $job) {
+            $container->setDefinition(
+                'oc.job.' . $name,
+                $container
+                    ->getDefinition('oc.all_conversions')
+                    ->addMethodCall('setCategory', [$job['category']])
+                    ->addMethodCall('setTarget', [$job['target']])
+            );
+        }
+
+        return $container;
+    }
+
+    private function enableAllConversions(ContainerBuilder $container)
+    {
+        $container->setDefinition('oc.job.convert_to_all', $container->getDefinition('oc.all_conversions'));
+        return $container;
+    }
 }

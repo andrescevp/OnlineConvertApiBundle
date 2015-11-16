@@ -2,6 +2,7 @@
 
 namespace Aacp\OnlineConvertApiBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -19,11 +20,18 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('aacp_online_convert_api');
-
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
 
+        $this->loadGeneral($rootNode);
+        $this->loadConversions($rootNode);
+
+        return $treeBuilder;
+    }
+
+    private function loadGeneral(ArrayNodeDefinition $rootNode)
+    {
         $rootNode
             ->children()
             ->scalarNode('api_key')
@@ -49,7 +57,28 @@ class Configuration implements ConfigurationInterface
             ->booleanNode('https')
             ->defaultValue(false)
             ->end();
-
-        return $treeBuilder;
+        $rootNode
+            ->children()
+            ->booleanNode('convert_to_all')
+            ->defaultValue(false)
+            ->end();
     }
+
+    private function loadConversions(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('jobs')
+                ->canBeUnset()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('name')->isRequired()->end()
+                            ->scalarNode('category')->isRequired()->end()
+                            ->scalarNode('target')->isRequired()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
 }

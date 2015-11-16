@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class JobCreateCommand extends ContainerAwareCommand
+class Mp3ConversionCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,10 +15,8 @@ class JobCreateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('oc:job:create')
-            ->setDescription('Create New Job')
-            ->addArgument('category', InputArgument::REQUIRED)
-            ->addArgument('target', InputArgument::REQUIRED)
+            ->setName('oc:job:conversion:mp3')
+            ->setDescription('Create Mp3 Conversion')
             ->addArgument('input', InputArgument::REQUIRED);
     }
 
@@ -27,13 +25,10 @@ class JobCreateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $category = $input->getArgument('category');
-        $target = $input->getArgument('target');
-        $source = $input->getArgument('input');
-        $jobCreator = $this->getContainer()->get('oc.job.convert_to_all');
 
-        $jobCreator->setCategory($category);
-        $jobCreator->setTarget($target);
+        $source = $input->getArgument('input');
+        $jobCreator = $this->getContainer()->get('oc.job.mp3');
+
         $options = [ 'rewq' ];
 
         $jobCreated = $jobCreator->createNewConversion($source, $options);

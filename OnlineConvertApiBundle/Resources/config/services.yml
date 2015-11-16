@@ -7,7 +7,7 @@ services:
         arguments: [ "@sdk.information", %oc.api_key%, %oc.decorator% ]
 
     oc.all_conversions:
-        class: Aacp\OnlineConvertApiBundle\Handler\AllConversions
+        class: Aacp\OnlineConvertApiBundle\Handler\Conversion
         arguments: [ %oc.api_key%, "@oc.information", %oc.decorator%, %oc.https%, "@?oc.callback.status" ]
 
 

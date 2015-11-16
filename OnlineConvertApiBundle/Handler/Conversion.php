@@ -15,7 +15,7 @@ use SwaggerClient\models\Job as SdkModelJob;
 use SwaggerClient\models\Status;
 use SwaggerClient\OutputApi;
 
-abstract class Conversion
+class Conversion
 {
     /**
      * @var SdkModelJob
@@ -246,4 +246,35 @@ abstract class Conversion
         //TODO implement with a logger, or some entry in your data base
     }
 
+    /**
+     * @return null
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param null $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return null
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * @param null $target
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
 }
