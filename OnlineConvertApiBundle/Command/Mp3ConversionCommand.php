@@ -29,15 +29,15 @@ class Mp3ConversionCommand extends ContainerAwareCommand
         $source = $input->getArgument('input');
         $jobCreator = $this->getContainer()->get('oc.job.mp3');
 
-//        $options = [ 'rewq' ];
+        $options = [ 'normalize' => true ];
 
-        $jobCreated = $jobCreator->newJob($source);
+        $jobCreated = $jobCreator->newJob($source, $options);
 
-//        $output->writeln(print_r($jobCreated));
+        $output->writeln(print_r($jobCreated));
 
 
-        if ($jobCreator->lookStatus() == true) {
-            $output->writeln($jobCreator->getStatus());
-        }
+//        if ($jobCreator->lookStatus() == true) {
+//            $output->writeln($jobCreator->getStatus());
+//        }
     }
 }
