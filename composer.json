@@ -1,6 +1,6 @@
 {
-  "name": "andrescevp/OnlineConvert",
-  "description": "Integrates php-amqplib with Symfony2 and RabbitMq",
+  "name": "andrescevp/OnlineConvertApiBundle",
+  "description": "Integrate API 2 SDK for OnlineConvert",
   "keywords": ["symfony2"],
   "type": "symfony-bundle",
   "license": "MIT",
