@@ -2,7 +2,7 @@
 
 namespace Aacp\OnlineConvertApiBundle\DependencyInjection;
 
-use SwaggerClient\Configuration as OcSdkApiConfig;
+use Qaamgo\Configuration as OcSdkApiConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
