@@ -10,6 +10,9 @@ services:
         class: Aacp\OnlineConvertApiBundle\Handler\Conversion
         arguments: [ "@sdk.job.creator" ]
 
+    oc.base_conversion:
+        class: Aacp\OnlineConvertApiBundle\Handler\BaseConversion
+        arguments: [ "@sdk.job.creator" ]
 
     sdk.information:
         class: Qaamgo\InformationApi

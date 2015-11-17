@@ -54,12 +54,11 @@ class AacpOnlineConvertApiExtension extends Extension
         if (empty($config['jobs'])) {
             return $container;
         }
-
         foreach($config['jobs'] as $name => $job) {
             $container->setDefinition(
                 'oc.job.' . $name,
                 $container
-                    ->getDefinition('oc.all_conversions')
+                    ->getDefinition('oc.base_conversion')
                     ->addMethodCall('setCategory', [$job['category']])
                     ->addMethodCall('setTarget', [$job['target']])
             );

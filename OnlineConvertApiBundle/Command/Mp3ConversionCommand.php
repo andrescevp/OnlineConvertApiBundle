@@ -29,9 +29,9 @@ class Mp3ConversionCommand extends ContainerAwareCommand
         $source = $input->getArgument('input');
         $jobCreator = $this->getContainer()->get('oc.job.mp3');
 
-        $options = [ 'rewq' ];
+//        $options = [ 'rewq' ];
 
-        $jobCreated = $jobCreator->createNewConversion($source, $options);
+        $jobCreated = $jobCreator->newJob($source);
 
 //        $output->writeln(print_r($jobCreated));
 

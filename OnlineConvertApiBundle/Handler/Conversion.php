@@ -6,7 +6,7 @@ use Qaamgo\JobCreator;
 
 class Conversion
 {
-    private $jobCreator;
+    protected $jobCreator;
 
     public function __construct(JobCreator $jobCreator)
     {
