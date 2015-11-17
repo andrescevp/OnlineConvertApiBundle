@@ -8,15 +8,16 @@ services:
 
     oc.all_conversions:
         class: Aacp\OnlineConvertApiBundle\Handler\Conversion
-        arguments: [ %oc.api_key%, "@oc.information", %oc.decorator%, %oc.https%, "@?oc.callback.status" ]
+        arguments: [ "@sdk.job.creator" ]
 
-
-    oc.callback.status:
-        class: Aacp\OnlineConvertApiBundle\Controller\StatusCallbackController
-        public: false
 
     sdk.information:
-        class: SwaggerClient\InformationApi
+        class: Qaamgo\InformationApi
+        public: false
+
+    sdk.job.creator:
+        class: Qaamgo\JobCreator
+        arguments: [ false, null, %oc.api_key% ]
         public: false
 
     oc.listener.request:

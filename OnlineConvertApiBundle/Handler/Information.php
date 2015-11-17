@@ -4,8 +4,9 @@ namespace Aacp\OnlineConvertApiBundle\Handler;
 
 
 use Aacp\OnlineConvertApiBundle\Decorator\Factory;
-use SwaggerClient\InformationApi;
+use Qaamgo\InformationApi;
 use Aacp\OnlineConvertApiBundle\Decorator\Interfaced as InterfacedDecorator;
+
 class Information
 {
     /**
