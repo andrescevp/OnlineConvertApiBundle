@@ -1,27 +1,34 @@
 services:
-#    aacp_online_convert_api.example:
-#        class: Aacp\OnlineConvertApiBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
     oc.information:
         class: Aacp\OnlineConvertApiBundle\Handler\Information
-        arguments: [ "@sdk.information", %oc.api_key%, %oc.decorator% ]
+        arguments: [ "@sdk.information", %oc.api_key% ]
 
-    oc.all_conversions:
-        class: Aacp\OnlineConvertApiBundle\Handler\Conversion
-        arguments: [ "@sdk.job.creator" ]
+    oc.conversion.factory:
+        class: Aacp\OnlineConvertApiBundle\Handler\Conversion\Factory
+        arguments: [ "@sdk.job.sync.creator", "@sdk.job.async.creator", "@oc.routing.callback.loader", "%oc.host%" ]
 
-    oc.base_conversion:
-        class: Aacp\OnlineConvertApiBundle\Handler\BaseConversion
-        arguments: [ "@sdk.job.creator" ]
+    oc.routing.callback.loader:
+        class: Aacp\OnlineConvertApiBundle\Routing\CallbackLoader
+        tags:
+            - { name: routing.loader }
+
+    sdk.client:
+        class: Qaamgo\ApiClient
+        arguments: [ %oc.https% ]
 
     sdk.information:
         class: Qaamgo\InformationApi
+        arguments: ["@sdk.client"]
         public: false
 
-    sdk.job.creator:
-        class: Qaamgo\JobCreator
-        arguments: [ false, null, %oc.api_key% ]
+    sdk.job.sync.creator:
+        class: Qaamgo\Job\Sync
+        arguments: [ "@sdk.client", "@sdk.information", %oc.api_key% ]
         public: false
+    sdk.job.async.creator:
+            class: Qaamgo\Job\Async
+            arguments: [ "@sdk.client", "@sdk.information", %oc.api_key% ]
+            public: false
 
     oc.listener.request:
         class: Aacp\OnlineConvertApiBundle\EventListener\OnlineConvertRequest

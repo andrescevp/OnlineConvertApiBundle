@@ -1,3 +1,1 @@
-aacp_online_convert_api_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: AacpOnlineConvertApiBundle:Default:index }
+

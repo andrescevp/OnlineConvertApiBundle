@@ -30,10 +30,12 @@ class JobCreateCommand extends ContainerAwareCommand
         $category = $input->getArgument('category');
         $target = $input->getArgument('target');
         $source = $input->getArgument('input');
-        $jobCreator = $this->getContainer()->get('oc.job.convert_to_all');
-
-        $jobCreated = $jobCreator->createJob($category, $target, $source);
-
-        $output->writeln(print_r($jobCreated));
+        $jobCreator = $this->getContainer()->get('oc.job.all_conversions');
+        $jobCreator->category = $category;
+        $jobCreator->target = $target;
+        $jobCreated = $jobCreator->newJob($source);
+        $jobCreated = get_object_vars($jobCreated);
+        $outputJob = $jobCreator->jobCreator->output->getJobOutput($jobCreated['id']);
+        $output->writeln(print_r($outputJob));
     }
 }

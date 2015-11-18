@@ -5,6 +5,8 @@ namespace Aacp\OnlineConvertApiBundle\DependencyInjection;
 use Qaamgo\Configuration as OcSdkApiConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -27,7 +29,6 @@ class AacpOnlineConvertApiExtension extends Extension
         $loader->load('services.yml');
 
         $container = $this->loadMainConfig($container, $config);
-
         $this->loadConversions($container, $config);
 
     }
@@ -54,14 +55,9 @@ class AacpOnlineConvertApiExtension extends Extension
         if (empty($config['jobs'])) {
             return $container;
         }
+
         foreach($config['jobs'] as $name => $job) {
-            $container->setDefinition(
-                'oc.job.' . $name,
-                $container
-                    ->getDefinition('oc.base_conversion')
-                    ->addMethodCall('setCategory', [$job['category']])
-                    ->addMethodCall('setTarget', [$job['target']])
-            );
+            $container = $this->createConverter($container, $name, $job);
         }
 
         return $container;
@@ -69,7 +65,27 @@ class AacpOnlineConvertApiExtension extends Extension
 
     private function enableAllConversions(ContainerBuilder $container)
     {
-        $container->setDefinition('oc.job.convert_to_all', $container->getDefinition('oc.all_conversions'));
+        $job = [
+            'category' => null,
+            'target' => null,
+            'async' => true,
+        ];
+
+        return $this->createConverter($container, 'all_conversions', $job);
+    }
+
+    private function createConverter(ContainerBuilder $container, $jobName, $job)
+    {
+        $async = $job['async'];
+        if ($async === true) {
+            $job = new Definition('Aacp\OnlineConvertApiBundle\Handler\Conversion\ConversionAsync', [ $job['category'], $job['target'], $job['async'] ]);
+        } else {
+            $job = new Definition('Aacp\OnlineConvertApiBundle\Handler\Conversion\ConversionSync', [ $job['category'], $job['target']]);
+        }
+
+        $job->setFactory([new Reference('oc.conversion.factory'), 'getConverter']);
+        $container->setDefinition('oc.job.' . $jobName, $job);
+
         return $container;
     }
 }

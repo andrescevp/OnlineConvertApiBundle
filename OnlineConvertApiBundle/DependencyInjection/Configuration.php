@@ -39,13 +39,13 @@ class Configuration implements ConfigurationInterface
             ->end();
         $rootNode
             ->children()
-            ->booleanNode('logging')
-            ->defaultValue(false)
+            ->scalarNode('host')
+            ->isRequired()
             ->end();
         $rootNode
             ->children()
-            ->scalarNode('decorator')
-            ->defaultValue('raw')
+            ->booleanNode('logging')
+            ->defaultValue(false)
             ->end();
         $rootNode
             ->children()
@@ -72,9 +72,9 @@ class Configuration implements ConfigurationInterface
                 ->canBeUnset()
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('name')->isRequired()->end()
                             ->scalarNode('category')->isRequired()->end()
                             ->scalarNode('target')->isRequired()->end()
+                            ->scalarNode('async')->defaultValue(false)->end()
                         ->end()
                     ->end()
                 ->end()

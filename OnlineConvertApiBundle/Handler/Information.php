@@ -14,42 +14,26 @@ class Information
      */
     private $info;
 
-    /**
-     * @var InterfacedDecorator
-     */
-    private $decorator;
-
     private $apiKey;
 
-    public function __construct(InformationApi $informationApi, $apiKey, $decoratorName = null)
+    public function __construct(InformationApi $informationApi, $apiKey)
     {
         $this->info = $informationApi;
         $this->apiKey = $apiKey;
-        if ($decoratorName === null) {
-            $decoratorName = 'json';
-        }
-        $decoratorFactory = new Factory($decoratorName);
-        $this->decorator = $decoratorFactory->getDecorator();
     }
 
     public function getSchema()
     {
-        return $this->decorator->pretty(
-            $this->info->getSchema()
-        );
+            $this->info->getSchema();
     }
 
     public function getStatuses()
     {
-        return $this->decorator->pretty(
-            $this->info->statusesGet()
-        );
+            $this->info->statusesGet();
     }
 
     public function getConversionInfo($category, $target, $page)
     {
-        return $this->decorator->pretty(
-            $this->info->conversionsGet($category, $target, $page)
-        );
+            $this->info->conversionsGet($category, $target, $page);
     }
 }
